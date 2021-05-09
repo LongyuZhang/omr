@@ -27,6 +27,8 @@ set(OMR_C_ENHANCED_WARNINGS_FLAG -Wall)
 set(OMR_CXX_ENHANCED_WARNINGS_FLAG -Wall)
 set(OMR_NASM_ENHANCED_WARNINGS_FLAG -Wall)
 
+set(OMR_EXTRA_PLATFORM_COMPILE_FLAGS -fprofile-arcs -ftest-coverage)
+
 # disable builtin strncpy buffer length check for components that use variable length
 # array fields at the end of structs
 set(OMR_STRNCPY_FORTIFY_OPTIONS -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1)
@@ -34,6 +36,10 @@ set(OMR_STRNCPY_FORTIFY_OPTIONS -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1)
 list(APPEND OMR_PLATFORM_COMPILE_OPTIONS -pthread -fno-strict-aliasing)
 
 list(APPEND OMR_PLATFORM_CXX_COMPILE_OPTIONS -std=c++0x)
+
+if(CODE_COVERAGE)
+	list(APPEND OMR_PLATFORM_COMPILE_OPTIONS OMR_EXTRA_PLATFORM_COMPILE_FLAGS)
+endif()
 
 if(OMR_ARCH_X86)
 	if(OMR_ENV_DATA64)
